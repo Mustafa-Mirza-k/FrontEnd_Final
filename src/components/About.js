@@ -82,8 +82,10 @@ class About extends Component {
                 To train the sequence-to-sequence model with right numbers of
                 Epochs and topics we have to form the complete analysis. To form
                 the complete analysis, we have trained our model considering
-                different parameters which are mentioned in the given 
-                <a href="https://1drv.ms/x/s!Am2z6pLslZVElTuWl0LwYXVCNyZa?e=s98fve" style={{fontSize:"15px"}}> excel file  </a>
+                different parameters which are mentioned in the given excel files by
+                <a href="https://1drv.ms/x/s!Am2z6pLslZVElTuWl0LwYXVCNyZa?e=s98fve" style={{fontSize:"15px"}}> Mustafa Mirza </a>
+                and
+                <a href="https://1drv.ms/x/s!ArfUKVT0QufNh5BCz6KCTVPKSK2TqA?e=na2Z49" style={{fontSize:"15px"}}> Nitesh Congreja </a>
                  .  
               </p>
              
@@ -92,11 +94,11 @@ class About extends Component {
               <p style={{ justifyContent: "center" }}>
                 Training is done on the below given settings:
                 <br />
-                1) No of Epoches =
+                1) No of Epoches = 25
                 <br />
-                2) No of Topics =
+                2) No of Topics = 60
                 <br />
-                3) No of Questions =
+                3) No of Questions =  18626
               </p>
             </div>
             <h2>Graph:</h2>

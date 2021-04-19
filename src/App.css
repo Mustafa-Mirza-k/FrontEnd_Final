@@ -869,7 +869,9 @@ ul#nav li {
   height: 48px;
   display: inline-block;
 }
-
+#nav-wrap a:hover{
+  color: #11abb0;
+}
 /* Links */
 
 ul#nav li a {
