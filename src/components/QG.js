@@ -6,7 +6,7 @@ import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import background from "../../images/bg_home.jpg";
 import $ from "jquery";
-import ReactFileReader from "react-file-reader";
+import Dropdown from "react-bootstrap/Dropdown";
 
 class homePage extends Component {
   state = {
@@ -14,6 +14,7 @@ class homePage extends Component {
     output: "",
     arr: [],
     show: false,
+    model: "Select Model",
   };
 
   componentDidMount() {
@@ -32,12 +33,21 @@ class homePage extends Component {
     this.setState({
       output: "",
     });
-    if (this.state.txtarea != "") {
+    if (this.state.model == "Select Model") {
+      alert("Please select the model from the dropdown");
+    } else if (this.state.txtarea != "") {
       this.setState({
         show: true,
       });
+      
       await axios
-        .get(`http://127.0.0.1:5000/${this.state.txtarea}`)
+        .get(
+          `${
+            this.state.model == "BERT Model"
+              ? `http://127.0.0.1:5000/${this.state.txtarea}`
+              : `http://127.0.0.1:5000/${this.state.txtarea}`
+          }`
+        )
         .then((res) => {
           this.setState({
             arr: res.data.questions,
@@ -83,6 +93,8 @@ class homePage extends Component {
     });
   };
   render() {
+    const options = ["one", "two", "three"];
+
     return (
       <div style={{ backgroundImage: `url(${background})`, width: width }}>
         <nav id="nav-wrap">
@@ -111,13 +123,14 @@ class homePage extends Component {
             </li>
           </ul>
         </nav>
-      <div style={{color:"white"}}>
-        <input
-          type="file"
-          accept=".txt"
-          style={{ marginTop: "5%", marginLeft: "5%", }}
-          onChange={(e) => this.handleChangeFile(e.target.files[0])}
-        />
+
+        <div style={{ color: "white" }}>
+          <input
+            type="file"
+            accept=".txt"
+            style={{ marginTop: "5%", marginLeft: "5%" }}
+            onChange={(e) => this.handleChangeFile(e.target.files[0])}
+          />
         </div>
 
         <textarea
@@ -146,9 +159,31 @@ class homePage extends Component {
             justifyContent: "center",
           }}
         >
+          <Dropdown>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              {this.state.model}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item
+                href=""
+                onClick={() => this.setState({ model: "BERT Model" })}
+              >
+                BERT Model
+              </Dropdown.Item>
+              <Dropdown.Item
+                href=""
+                onClick={() => this.setState({ model: "Seq2Seq Model" })}
+              >
+                Seq2Seq Model
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
           <button onClick={this.btngenQuestions} style={{ fontSize: "20px" }}>
             Generate Questions
           </button>
+
           {this.state.show == true ? (
             <Loader
               type="ThreeDots"
