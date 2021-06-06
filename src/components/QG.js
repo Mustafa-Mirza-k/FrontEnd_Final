@@ -1,12 +1,13 @@
-import React, { Component, useEffect } from "react";
 import axios from "axios";
-const height = window.innerHeight;
-const width = window.innerWidth;
+import $ from "jquery";
+import React, { Component } from "react";
+import { Dropdown } from "react-bootstrap";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import background from "../../images/bg_home.jpg";
-import $ from "jquery";
-import Dropdown from "react-bootstrap/Dropdown";
+const height = window.innerHeight;
+const width = window.innerWidth;
 
 class homePage extends Component {
   state = {
@@ -15,6 +16,7 @@ class homePage extends Component {
     arr: [],
     show: false,
     model: "Select Model",
+    paragraph: "Select Paragraph",
   };
 
   componentDidMount() {
@@ -132,6 +134,27 @@ class homePage extends Component {
             onChange={(e) => this.handleChangeFile(e.target.files[0])}
           />
         </div>
+        <Dropdown       
+        style={{ marginTop: "1%", marginLeft: "5%" }}>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic" >
+              {this.state.paragraph}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item
+                href=""
+                onClick={() => this.setState({ paragraph: "Para 1" })}
+              >
+                Para 1
+              </Dropdown.Item>
+              <Dropdown.Item
+                href=""
+                onClick={() => this.setState({ paragraph: "Para 2" })}
+              >
+                Para 2
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
 
         <textarea
           name="txtarea"
@@ -184,6 +207,8 @@ class homePage extends Component {
             Generate Questions
           </button>
 
+         
+
           {this.state.show == true ? (
             <Loader
               type="ThreeDots"
@@ -213,10 +238,54 @@ class homePage extends Component {
             borderRadius: "10px",
           }}
         ></textarea>
-        <div style={{ paddingTop: height / 8 }}></div>
+
+       
+
+        <textarea
+          id="consolePlaceHolderColor"
+          name="console"
+          placeholder="Console Results"
+          value={this.state.output}
+          style={{
+            
+            padding: "20px",
+            color: "#2C74F1",
+            backgroundColor:"#494949",
+            height: height / 2,
+            width: width * 0.9,
+            marginLeft: "5%",
+            marginRight: "5%",
+            marginTop: "2%",
+            borderRadius: "10px",
+          }}
+        ></textarea>
+
+        
+
+        <div style={{ 
+          height: height * 0.1,
+          width: width * 0.9,
+          marginLeft: "5%",
+          marginRight: "5%",
+          marginTop: "2%",
+          borderRadius: "10px",
+        }}>  
+        <h1 style={{color: "white"}}>Accuracy</h1>
+        <ProgressBar variant="success" now={30} label='(30%)'  
+        style={{ 
+          height: height * 0.05,
+        }}/>
+        </div>
+
+        <div style={{ paddingTop: height / 8  }}></div>
+
       </div>
     );
+    
   }
+  
 }
+
+
 
 export default homePage;
