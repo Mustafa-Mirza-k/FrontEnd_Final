@@ -25,6 +25,15 @@ textarea {
   color:"blue";
 }
 
+#output {
+  padding: "20px";
+  color: "#2C74F1";
+  margin-left: "5%";
+  margin-right: "5%";
+  margin-top: "2%";
+  border-radius: "10px";
+}
+
 button {
   height: 50px;
   width: 230px;

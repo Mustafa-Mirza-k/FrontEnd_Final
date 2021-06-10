@@ -17,6 +17,7 @@ class homePage extends Component {
     show: false,
     model: "Select Model",
     paragraph: "Select Paragraph",
+    accuracy: null,
   };
 
   componentDidMount() {
@@ -34,6 +35,7 @@ class homePage extends Component {
   btngenQuestions = async (e) => {
     this.setState({
       output: "",
+      accuracy: null,
     });
     if (this.state.model == "Select Model") {
       alert("Please select the model from the dropdown");
@@ -41,18 +43,20 @@ class homePage extends Component {
       this.setState({
         show: true,
       });
-      
+
       await axios
         .get(
           `${
-            this.state.model == "BERT Model"
-              ? `http://127.0.0.1:5000/${this.state.txtarea}`
+            this.state.model == "T5 Model"
+            // Nitesh Check this line below
+              ? `http://127.0.0.1:5000/?para=${this.state.txtarea}&questions=${[["In what country is Normandy located?"],["When were the Normans in Normandy?"],["From which countries did the Norse originate?"],["Who was the Norse leader?"],["What century did the Normans first gain their separate identity?"],["Who did King Charles III swear fealty to?"],["When did the Frankish identity emerge?"],["What is France a region of?"]]}`
               : `http://127.0.0.1:5000/${this.state.txtarea}`
           }`
         )
         .then((res) => {
           this.setState({
             arr: res.data.questions,
+            accuracy: res.data.accuracy,
           });
         })
         .catch(function (error) {
@@ -94,8 +98,56 @@ class homePage extends Component {
       txtarea: value,
     });
   };
+
+  accuracy = (acc) => {
+    return [
+      <h1 style={{ color: "white" }}>Accuracy</h1>,
+      // /* Bleu Accuracy */
+      <h4 style={{ color: "white" }}>BLEU</h4>,
+      <ProgressBar
+        variant="success"
+        now={acc[0]}
+        label={"(" + (Math.round(acc[0] * 100) / 100).toFixed(2) + ")"}
+        style={{
+          height: height * 0.05,
+        }}
+      />,
+
+      // /* METEOR Accuracy */
+      <h4 style={{ color: "white", marginTop: "2%" }}>METEOR</h4>,
+      <ProgressBar
+        variant="success"
+        now={acc[1]}
+        label={"(" + (Math.round(acc[1] * 100) / 100).toFixed(2) + ")"}
+        style={{
+          height: height * 0.05,
+        }}
+      />,
+    ];
+  };
+
   render() {
-    const options = ["one", "two", "three"];
+    const styletxtArea = {
+      padding: "20px",
+      color: "#2C74F1",
+      height: height / 2,
+      width: width * 0.9,
+      marginLeft: "5%",
+      marginRight: "5%",
+      marginTop: "2%",
+      borderRadius: "10px",
+    };
+
+    const styledivdropdown = {
+      marginTop: "1%",
+      display: "flex",
+      flex: 1,
+      flexDirection: "row",
+      width: width,
+      justifyContent: "center",
+    };
+
+    
 
     return (
       <div style={{ backgroundImage: `url(${background})`, width: width }}>
@@ -134,54 +186,35 @@ class homePage extends Component {
             onChange={(e) => this.handleChangeFile(e.target.files[0])}
           />
         </div>
-        <Dropdown       
-        style={{ marginTop: "1%", marginLeft: "5%" }}>
-            <Dropdown.Toggle variant="primary" id="dropdown-basic" >
-              {this.state.paragraph}
-            </Dropdown.Toggle>
+        <Dropdown style={{ marginTop: "1%", marginLeft: "5%" }}>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            {this.state.paragraph}
+          </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item
-                href=""
-                onClick={() => this.setState({ paragraph: "Para 1" })}
-              >
-                Para 1
-              </Dropdown.Item>
-              <Dropdown.Item
-                href=""
-                onClick={() => this.setState({ paragraph: "Para 2" })}
-              >
-                Para 2
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              href=""
+              onClick={() => this.setState({ paragraph: "Para 1" })}
+            >
+              Para 1
+            </Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => this.setState({ paragraph: "Para 2" })}
+            >
+              Para 2
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
 
         <textarea
           name="txtarea"
           value={this.state.txtarea}
           onChange={this.handleChange}
           placeholder="Enter the text here!"
-          style={{
-            padding: "10px",
-            color: "#2C74F1",
-            height: height / 3,
-            width: width * 0.9,
-            marginLeft: "5%",
-            marginRight: "5%",
-            marginTop: "1%",
-            borderRadius: "10px",
-          }}
+          style={styletxtArea}
         ></textarea>
-        <div
-          style={{
-            marginTop: "1%",
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            width: width,
-            justifyContent: "center",
-          }}
-        >
+        <div style={styledivdropdown}>
           <Dropdown>
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
               {this.state.model}
@@ -190,9 +223,9 @@ class homePage extends Component {
             <Dropdown.Menu>
               <Dropdown.Item
                 href=""
-                onClick={() => this.setState({ model: "BERT Model" })}
+                onClick={() => this.setState({ model: "T5 Model" })}
               >
-                BERT Model
+                T5 Model
               </Dropdown.Item>
               <Dropdown.Item
                 href=""
@@ -206,8 +239,6 @@ class homePage extends Component {
           <button onClick={this.btngenQuestions} style={{ fontSize: "20px" }}>
             Generate Questions
           </button>
-
-         
 
           {this.state.show == true ? (
             <Loader
@@ -227,65 +258,26 @@ class homePage extends Component {
           name="output"
           placeholder="Output!"
           value={this.state.output}
-          style={{
-            padding: "20px",
-            color: "#2C74F1",
-            height: height / 2,
-            width: width * 0.9,
-            marginLeft: "5%",
-            marginRight: "5%",
-            marginTop: "2%",
-            borderRadius: "10px",
-          }}
-        ></textarea>
-
-       
-
-        <textarea
-          id="consolePlaceHolderColor"
-          name="console"
-          placeholder="Console Results"
-          value={this.state.output}
-          style={{
-            
-            padding: "20px",
-            color: "#2C74F1",
-            backgroundColor:"#494949",
-            height: height / 2,
-            width: width * 0.9,
-            marginLeft: "5%",
-            marginRight: "5%",
-            marginTop: "2%",
-            borderRadius: "10px",
-          }}
+          style={styletxtArea}
         ></textarea>
 
         
 
-        <div style={{ 
-          height: height * 0.1,
-          width: width * 0.9,
-          marginLeft: "5%",
-          marginRight: "5%",
-          marginTop: "2%",
-          borderRadius: "10px",
-        }}>  
-        <h1 style={{color: "white"}}>Accuracy</h1>
-        <ProgressBar variant="success" now={30} label='(30%)'  
-        style={{ 
-          height: height * 0.05,
-        }}/>
+        <div
+          style={{
+            marginLeft: "5%",
+            marginRight: "5%",
+            marginTop: "2%",
+            borderRadius: "10px",
+          }}
+        >
+          {this.state.accuracy !== null && this.accuracy(this.state.accuracy)}
         </div>
 
-        <div style={{ paddingTop: height / 8  }}></div>
-
+        <div style={{ paddingTop: height / 8 }}></div>
       </div>
     );
-    
   }
-  
 }
-
-
 
 export default homePage;
