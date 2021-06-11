@@ -11,12 +11,15 @@ const width = window.innerWidth;
 
 class homePage extends Component {
   state = {
+    txtareaDisable: false,
     txtarea: "",
     output: "",
     arr: [],
     show: false,
+    showParaDropDown: false,
     model: "Select Model",
-    paragraph: "Select Paragraph",
+    Title: "Select Title",
+    Paragraph: "Select Paragraph",
     accuracy: null,
   };
 
@@ -31,6 +34,8 @@ class homePage extends Component {
       });
     });
   }
+
+
 
   btngenQuestions = async (e) => {
     this.setState({
@@ -98,6 +103,34 @@ class homePage extends Component {
       txtarea: value,
     });
   };
+  
+
+
+  renderParaDropdown = () => {
+    return [
+      <Dropdown ref = {(input)=> this.menu = input} style={{ marginTop: "1%", marginLeft: "5%" }}>
+      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        {this.state.Paragraph}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+     
+        <Dropdown.Item
+          href=""
+          onClick={() => this.setState({ Paragraph: "Para 1", txtarea: 'Para 1', txtareaDisable: true,   })}
+        >
+          Para 1
+        </Dropdown.Item>
+        <Dropdown.Item
+          href=""
+          onClick={() => this.setState({ Paragraph: "Para 2",  txtarea: 'Para 2', txtareaDisable: true,   })}
+        >
+          Para 2
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+    ];
+  };
+
 
   accuracy = (acc) => {
     return [
@@ -186,30 +219,45 @@ class homePage extends Component {
             onChange={(e) => this.handleChangeFile(e.target.files[0])}
           />
         </div>
-        <Dropdown style={{ marginTop: "1%", marginLeft: "5%" }}>
+        
+
+    
+        <Dropdown ref = {(input)=> this.menu = input} style={{ marginTop: "1%", marginLeft: "5%" }}>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            {this.state.paragraph}
+            {this.state.Title}
           </Dropdown.Toggle>
+          
 
           <Dropdown.Menu>
-            <Dropdown.Item
+
+          <Dropdown.Item
               href=""
-              onClick={() => this.setState({ paragraph: "Para 1" })}
+              onClick={() => this.setState({ Title: "Select Title",  txtarea: "",  showParaDropDown: false , txtareaDisable: false, })}
             >
-              Para 1
+                None
             </Dropdown.Item>
             <Dropdown.Item
               href=""
-              onClick={() => this.setState({ paragraph: "Para 2" })}
+              onClick={() => this.setState({ Title: "Title 1",   showParaDropDown: true  })}
             >
-              Para 2
+              Title 1
+            </Dropdown.Item>
+            <Dropdown.Item
+              href=""
+              onClick={() => this.setState({ Title: "Title 2", showParaDropDown: true   })}
+            >
+              Title 2
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        
+        {this.state.showParaDropDown == true  && this.renderParaDropdown()}
+        
 
         <textarea
           name="txtarea"
           value={this.state.txtarea}
+          readOnly = {this.state.txtareaDisable}
           onChange={this.handleChange}
           placeholder="Enter the text here!"
           style={styletxtArea}
