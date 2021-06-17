@@ -197,7 +197,7 @@ class homePage extends Component {
             this.state.model == "T5 Model"
               ? // Nitesh Check this line below
                 `http://127.0.0.1:5000/?para=${this.state.txtarea}&questions=${this.state.question}`
-              : `http://127.0.0.1:5000/${this.state.txtarea}`
+              : `http://127.0.0.1:3000/?para=${this.state.txtarea}&questions=${this.state.question}`
           }`
         )
         .then((res) => {
