@@ -19,9 +19,15 @@ class Header extends Component {
                 Home
               </Link>
             </li>
+           
             <li>
               <Link className="smoothscroll" to="/QG">
                 Question Generation
+              </Link>
+            </li>
+            <li >
+              <Link className="smoothscroll" to="/AQG">
+               Advanced Question Generation
               </Link>
             </li>
             <li>

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from "./components/Home";
 import QG from "./components/QG";
 import About from "./components/About";
+import AQG from "./components/AdvancedQues"
 
 
 
@@ -23,6 +24,7 @@ class App extends Component {
       <Switch>
         <Route exact path="/"  component={Home} />
         <Route path="/QG"  component={QG} />
+        <Route path="/AQG" component={AQG} />
         <Route path="/About" component={About} />
       </Switch>
 

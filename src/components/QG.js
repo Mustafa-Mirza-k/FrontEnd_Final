@@ -371,7 +371,7 @@ class homePage extends Component {
 
     return (
       <div style={{ backgroundImage: `url(${background})`, width: width }}>
-        <nav id="nav-wrap">
+         <nav id="nav-wrap">
           <a className="mobile-btn" href="#nav-wrap" title="Show navigation">
             Show navigation
           </a>
@@ -390,6 +390,11 @@ class homePage extends Component {
                 Question Generation
               </Link>
             </li>
+            <li >
+              <Link className="smoothscroll" to="/AQG">
+               Advanced Question Generation
+              </Link>
+            </li>
             <li>
               <Link className="smoothscroll" to="/About">
                 About
@@ -397,6 +402,7 @@ class homePage extends Component {
             </li>
           </ul>
         </nav>
+
 
         <div style={{ color: "white" }}>
           <input

@@ -41,6 +41,11 @@ class About extends Component {
                 Question Generation
               </Link>
             </li>
+            <li >
+              <Link className="smoothscroll" to="/AQG">
+               Advanced Question Generation
+              </Link>
+            </li>
             <li className="current">
               <Link className="smoothscroll" to="/About">
                 About
